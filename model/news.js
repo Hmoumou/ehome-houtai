@@ -13,7 +13,10 @@ const news = new mongoose.Schema({
         type:mongoose.SchemaTypes.ObjectId,
         ref:'category'
     },
-    look_num:Number
+    look_num:{
+        type:Number,
+        default:1
+    }
 },{versionKey:false,timestamps:{createdAt:'create_time',updatedAt:'update_time'}})//创建表结构
 
 

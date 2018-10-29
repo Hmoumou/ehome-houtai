@@ -25,7 +25,8 @@ router.get('/',async (req, res, next)=>{
         let { page=1, page_size=5 } = req.query
         page = parseInt(page)
         page_size = parseInt(page_size)
-        let newList = newsModel
+        const count = await newsModel.count()
+        const newList = await newsModel
         .find()
         .sort({_id:-1})
         .skip((page-1)*page_size)
@@ -35,17 +36,18 @@ router.get('/',async (req, res, next)=>{
         res.json({
             code:200,
             msg:'success',
-            data:newList
+            data:newList,
+            count
         })
     }catch(err){
         next(err)
     }
 })
 
-router.get('/:id',async (req, res, next)=>{
+router.get('/:id', (req, res, next)=>{
     try{
        let { id }= req.query
-        let data = newsModel
+        const data =  newsModel
         .findById(id)
         .populate({ path:'admin_user',select:'-password'})
         .populate({ path:'category'})
