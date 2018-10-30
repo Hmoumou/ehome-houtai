@@ -6,7 +6,13 @@ const auth = require('./auth.js')
 router.post('/',auth, async (req,res, next)=>{
    try{
         let {
-            title,type,look_num,content,contentText,img,author
+            title,
+            type,
+            look_num,
+            content,
+            contentText,
+            img,
+            author
         } = req.body
         let data = await newsModel.create({
             title,type,look_num,content,contentText,img,author
@@ -31,8 +37,8 @@ router.get('/',async (req, res, next)=>{
         .sort({_id:-1})
         .skip((page-1)*page_size)
         .limit(page_size)
-        .populate({ path:'admin_user',select:'-password'})
-        .populate({ path:'category'})
+        // .populate({ path:'author',select:'-password'})
+        .populate({ path:'type'})
         res.json({
             code:200,
             msg:'success',

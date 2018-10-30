@@ -6,8 +6,9 @@ const news = new mongoose.Schema({
     contentText:String,
     img:String,
     author:{
-        type:mongoose.SchemaTypes.ObjectId,
-        ref:'admin_user'
+        type:String
+        // type:mongoose.SchemaTypes.ObjectId,
+        // ref:'admin_user'
     },
     type:{
         type:mongoose.SchemaTypes.ObjectId,
