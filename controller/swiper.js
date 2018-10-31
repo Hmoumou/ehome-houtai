@@ -89,7 +89,7 @@ router.patch('/:id',auth,async (req,res, next)=>{
                 img,
                 states
             } = req.body
-            const data = swiperModel.findById(id)
+            const data = await swiperModel.findById(id)
             const updateData = await data.update({
                $set:{
                 title,

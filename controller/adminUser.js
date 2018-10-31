@@ -122,4 +122,39 @@ router.delete('/:id', auth, async (req, res, next)=>{
     }
 })
 
+router.patch('/:id',auth, async (req, res, next)=>{
+    try{
+        let { id } = req.params
+        let {
+            username,
+            nickname,
+            avatar,
+            desc,
+            job,
+            phone,
+            sex,
+        } = req.body
+        const data = await AdminUserModel.findById(id)
+        const editData = await data.update({
+            $set:{
+                username,
+                nickname,
+                avatar,
+                desc,
+                job,
+                phone,
+                sex,
+            }
+        })
+
+        res.json({
+            code:200,
+            msg:'修改成功',
+            data:editData
+        })
+    }catch(err){
+        next(err)
+    }
+})
+
 module.exports = router

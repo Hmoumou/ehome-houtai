@@ -50,13 +50,11 @@ router.get('/',async (req, res, next)=>{
     }
 })
 
-router.get('/:id', (req, res, next)=>{
+router.get('/:id',async (req, res, next)=>{
     try{
-       let { id }= req.query
-        const data =  newsModel
+       let { id }= req.params
+        const data = await  newsModel
         .findById(id)
-        .populate({ path:'admin_user',select:'-password'})
-        .populate({ path:'category'})
         res.json({
             code:200,
             msg:'success',
@@ -64,6 +62,50 @@ router.get('/:id', (req, res, next)=>{
         })
     }catch(err){
         next(err)
+    }
+})
+router.patch('/:id',auth, async(req, res, next)=>{
+    try {
+        let { id } = req.params
+        let {
+            title,
+            type,
+            look_num,
+            content,
+            contentText,
+            img,
+        } = req.body
+        const data = await newsModel.findById(id)
+        const EditData = await data.update({
+            $set:{
+                title,
+                type,
+                look_num,
+                content,
+                contentText,
+                img,
+            }
+        })
+        res.json({
+            code:200,
+            msg:'修改成功',
+            data:EditData
+        })
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.delete('/:id',auth, async(req, res, next)=>{
+    try {
+        let { id } = req.params
+       await  newsModel.deleteOne({_id:id})
+        res.json({
+            code:200,
+            msg:'成功删除一条新闻'
+        })
+    } catch (error) {
+        next(error)
     }
 })
 
